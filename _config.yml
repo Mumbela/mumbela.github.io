@@ -9,20 +9,68 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-paginate-v2
-  - jekyll-github-metadata
-  - jekyll-relative-links
-  - jekyll-mentions
-  - jekyll-commonmark-ghpages
+  # - jekyll-github-metadata
+  # - jekyll-relative-links
+  # - jekyll-mentions
+  # - jekyll-commonmark-ghpages
   # -jekyll-coffeescript
   # - jekyll-gist
   # - jekyll-textile-converter
   # Uncomment the following lines to enable additional Jekyll plugins
   # below are not supported by GitHub Pages
-  # - jekyll-archives
+  - jekyll-archives
   # - jekyll-include-cache
   # - jekyll-mentions
   # - jemoji
 
+pagination:
+  enabled: true
+  per_page: 5
+  # permalink: "/blog/:num/"
+  permalink: "/blog/page:num/"
+  title_suffix: " - page :num"
+  limit: 0
+  # sort_field: "date"
+  # sort_reverse: true
+  # category: "posts"
+# tag: "cool"
+# locale: "en_US"
+
+# paginate_path: "/blog/page:num/"
+
 markdown: kramdown
 theme: null
 
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: archive
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
+  title: Archive
+  archive_dir: archives
+
+collections:
+  authors:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "authors"
+    values:
+      layout: "author"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+exclude:
+  - public/
