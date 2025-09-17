@@ -1,0 +1,28 @@
+url: "https://mumbela.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+title: "Mumbela's Blog" # the name of your site, e.g. ACME Corp.
+
+description: >-
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate-v2
+  - jekyll-github-metadata
+  - jekyll-relative-links
+  - jekyll-mentions
+  - jekyll-commonmark-ghpages
+  # -jekyll-coffeescript
+  # - jekyll-gist
+  # - jekyll-textile-converter
+  # Uncomment the following lines to enable additional Jekyll plugins
+  # below are not supported by GitHub Pages
+  # - jekyll-archives
+  # - jekyll-include-cache
+  # - jekyll-mentions
+  # - jemoji
+
+markdown: kramdown
+theme: null
+
