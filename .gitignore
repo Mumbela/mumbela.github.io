@@ -12,6 +12,10 @@ _site/
 *.class
 Gemfile.lock
 
+# Node modules
+node_modules/
+*-lock.json
+
 # System files
 .DS_Store
 Thumbs.db
