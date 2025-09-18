@@ -1,0 +1,46 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-bd-primary settings-btn" id="settings-btn" data-bs-toggle="modal" data-bs-target="#settingsModal">
+  <i class="bi bi-gear"></i> Settings
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="settingsModalLabel">Settings</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="font-type-select" class="settings-modal-label">Font Type:</label>
+                    <select id="font-type-select" class="font-type-select">
+                        <option value="default">Default (System)</option>
+                        <option value="comic">Comic Sans</option>
+                        <option value="roboto">Roboto Mono</option>
+                        <option value="dyslexic">Dyslexic Regular</option>
+                        <option value="dyslexic-mono">Dyslexic Mono</option>
+                        <option value="dyslexic-bold">Dyslexic Bold</option>
+                        <option value="dyslexic-alt">Dyslexic Alta</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="font-size-select" class="settings-modal-label">Font Size:</label>
+                    <select id="font-size-select" class="settings-modal-select">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                        <option value="x-large">Extra Large</option>
+                    </select>
+                </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

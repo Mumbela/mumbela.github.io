@@ -7,3 +7,58 @@
 //   color: $bodyColor;
 //   font-family: $bodyFont;
 // }
+
+/* Back to top button*/
+
+.back-to-top {
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:10px 16px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  z-index:1000;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Settings modal and button */
+
+.settings-btn {
+    position: fixed;
+    bottom: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    left: 20px;
+    cursor: pointer;
+}
+
+.settings-modal-select {
+	width:100%;
+	margin-top:0.5rem;
+	margin-bottom:1rem;
+	padding:0.5rem;
+	border-radius:5px;
+	border:1px solid #ccc;
+}
+
+.settings-modal-close {
+	position:absolute;
+	top:12px;
+	right:12px;
+	background:none;
+	border:none;
+	font-size:1.5rem;
+	cursor:pointer;
+}
+
+.font-type-select {
+	width:100%;
+	margin-top:0.5rem;
+	margin-bottom:1rem;
+	padding:0.5rem;
+	border-radius:5px;
+	border:1px solid #ccc;
+}
