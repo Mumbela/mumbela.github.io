@@ -1,8 +1,8 @@
 ---
 layout: default
-title: "Welcome!"
+title: "Website Under Construction"
 ---
 
-## Welcome to my blog
+## Website Under Construction
 
-Start developing your Jekyll website.
+This website is under construction. Some items or functions may be missing or have unexpected problems. Kindly check back later for more.
