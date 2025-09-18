@@ -20,7 +20,7 @@
   "main": "index.html",
   "scripts": {
     "start:jekyll": "jekyll serve --watch --livereload",
-    "start:jekyll-drafts": "jekyll serve --drafts --watch --livereload --incremental",
+    "start:jekyll-drafts": "bundle exec jekyll serve --drafts --watch --livereload",
     "start:api": "json-server --watch _data/db.json --port 3001",
     "start": "concurrently \"npm run start:jekyll\" \"npm run start:api\"",
     "build": "jekyll build",
