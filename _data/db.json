@@ -7,6 +7,10 @@
         {
             "name": "Blog",
             "link": "/blog/"
+        },
+        {
+            "name": "Archives",
+            "link": "/archives/"
         }
     ],
     "footer": [
