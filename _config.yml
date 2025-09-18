@@ -28,7 +28,7 @@ pagination:
   per_page: 5
   # permalink: "/blog/:num/"
   permalink: "/blog/page:num/"
-  title_suffix: " - page :num"
+  title: " - page :num"
   limit: 0
   # sort_field: "date"
   # sort_reverse: true
