@@ -13,7 +13,10 @@
 
 {% include settings.html %}
 
-<button class="back-to-top" id="back-to-top">Back to top</button>
+<button type="button" class="back-to-top btn btn-bd-primary" id="back-to-top">
+    <i class="bi bi-chevron-up"></i>
+    <span class="visually-hidden">Back to top</span>
+</button>
 
 <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)"> <svg class="bi my-1 theme-icon-active" aria-hidden="true"><use href="#circle-half"></use></svg> <span class="visually-hidden" id="bd-theme-text">Toggle theme</span> </button>
