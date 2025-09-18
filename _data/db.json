@@ -2,7 +2,7 @@
     "navbar": [
         {
             "name": "Home",
-            "link": "/"
+            "link": "/home/"
         }
     ],
     "footer": [
