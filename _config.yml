@@ -18,12 +18,9 @@ pagination:
   permalink: "page:num/"
   title: " - page :num"
   limit: 0
-  # sort_field: "date"
-  # sort_reverse: true
-  # category: "posts"
-  # tag: "cool"
-  # locale: "en_US"
-  # paginate_path: "/blog/page:num"
+  sort_field: "date"
+  sort_reverse: true
+  paginate_path: "/blog/page:num/"
 
 jekyll-archives:
   enabled:
