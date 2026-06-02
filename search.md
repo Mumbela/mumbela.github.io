@@ -4,24 +4,40 @@ title: Search
 permalink: /search/
 ---
 
-<div class="search-container">
-  <input 
-    type="text" 
-    id="search-input" 
-    placeholder="Search posts by title, content, tags, categories..." 
-    class="search-box"
-  />
-  <button id="clear-search" class="search-clear" style="display:none;">Clear</button>
-</div>
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body p-4">
+            <h1 class="card-title">Search the site</h1>
+            <p class="card-text text-muted">Search posts by title, content, tags, categories, and authors.</p>
+            <form id="search-form" class="row g-2 align-items-center mt-3">
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  id="search-input"
+                  placeholder="Type a keyword…"
+                  class="form-control form-control-lg"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="col-md-3 d-grid">
+                <button type="button" id="clear-search" class="btn btn-outline-secondary btn-lg" style="display:none;">Clear</button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-<div id="search-results" class="search-results">
-  <p id="search-prompt">Enter a search term to find posts.</p>
-</div>
+        <div id="search-results" class="search-results"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
   let postsData = [];
 
-  // Fetch and parse the search index
   fetch('{{ "/assets/search.json" | relative_url }}')
     .then(response => response.json())
     .then(data => {
@@ -32,20 +48,50 @@ permalink: /search/
   const searchInput = document.getElementById('search-input');
   const clearButton = document.getElementById('clear-search');
   const resultsDiv = document.getElementById('search-results');
-  const promptDiv = document.getElementById('search-prompt');
 
-  // Perform search on input
-  searchInput.addEventListener('input', function() {
-    const query = this.value.trim().toLowerCase();
-    clearButton.style.display = query ? 'inline-block' : 'none';
+  function renderMessage(message, type = 'muted') {
+    resultsDiv.innerHTML = `<div class="alert alert-${type}">${escapeHtml(message)}</div>`;
+  }
 
-    if (query.length === 0) {
-      resultsDiv.innerHTML = '<p id="search-prompt">Enter a search term to find posts.</p>';
+  function renderResults(results) {
+    if (!results || results.length === 0) {
+      renderMessage('No posts found. Try a different search term.', 'warning');
       return;
     }
 
-    if (query.length < 2) {
-      resultsDiv.innerHTML = '<p>Type at least 2 characters to search.</p>';
+    const html = results.map(post => {
+      const tags = (post.tags || []).map(tag => `<span class="badge bg-secondary me-1 mb-1">${escapeHtml(tag)}</span>`).join('');
+      return `
+        <div class="col-12">
+          <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+              <h3 class="h5 card-title mb-2"><a href="${post.url}" class="text-decoration-none text-dark">${escapeHtml(post.title)}</a></h3>
+              <p class="text-muted mb-2">${escapeHtml(post.date)}</p>
+              <p class="card-text text-muted mb-3">${escapeHtml((post.excerpt || '').substring(0, 140))}...</p>
+              <div>${tags}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    resultsDiv.innerHTML = `
+      <div class="mb-4">
+        <p class="mb-0"><strong>${results.length}</strong> result${results.length !== 1 ? 's' : ''} found</p>
+      </div>
+      <div class="row g-3">${html}</div>
+    `;
+  }
+
+  function searchPosts(query) {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) {
+      renderMessage('Enter a search term to find posts.');
+      return;
+    }
+
+    if (normalized.length < 2) {
+      renderMessage('Type at least 2 characters to search.', 'info');
       return;
     }
 
@@ -55,138 +101,35 @@ permalink: /search/
       const excerpt = (post.excerpt || '').toLowerCase();
       const tags = (post.tags || []).join(' ').toLowerCase();
       const categories = (post.categories || []).join(' ').toLowerCase();
+      const author = (post.author || '').toLowerCase();
 
-      return (
-        title.includes(query) ||
-        content.includes(query) ||
-        excerpt.includes(query) ||
-        tags.includes(query) ||
-        categories.includes(query)
-      );
+      return [title, content, excerpt, tags, categories, author].some(field => field.includes(normalized));
     });
 
-    if (results.length === 0) {
-      resultsDiv.innerHTML = '<p>No posts found. Try a different search term.</p>';
-      return;
-    }
+    renderResults(results);
+  }
 
-    const html = results
-      .map(post => `
-        <div class="search-result">
-          <h3><a href="{{ site.baseurl }}${post.url}">${escapeHtml(post.title)}</a></h3>
-          <p class="result-meta">${post.date}</p>
-          <p class="result-excerpt">${escapeHtml(post.excerpt.substring(0, 150))}...</p>
-          <div class="result-tags">
-            ${post.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
-          </div>
-        </div>
-      `)
-      .join('');
-
-    resultsDiv.innerHTML = `<p>${results.length} result${results.length !== 1 ? 's' : ''} found</p>${html}`;
+  searchInput.addEventListener('input', function() {
+    const query = this.value;
+    clearButton.style.display = query ? 'block' : 'none';
+    searchPosts(query);
   });
 
-  // Clear search
   clearButton.addEventListener('click', function() {
     searchInput.value = '';
     clearButton.style.display = 'none';
-    resultsDiv.innerHTML = '<p id="search-prompt">Enter a search term to find posts.</p>';
+    renderMessage('Enter a search term to find posts.');
     searchInput.focus();
   });
 
-  // Helper function to escape HTML
+  renderMessage('Enter a search term to find posts.');
+
   function escapeHtml(text) {
-    const map = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 </script>
-
-<style>
-  .search-container {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .search-box {
-    flex: 1;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .search-box:focus {
-    outline: none;
-    border-color: #333;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .search-clear {
-    padding: 0.5rem 1rem;
-    background: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .search-clear:hover {
-    background: #e0e0e0;
-  }
-
-  .search-results {
-    margin-top: 1rem;
-  }
-
-  .search-result {
-    border: 1px solid #eee;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-  }
-
-  .search-result h3 {
-    margin: 0 0 0.5rem 0;
-  }
-
-  .search-result h3 a {
-    text-decoration: none;
-    color: #0066cc;
-  }
-
-  .search-result h3 a:hover {
-    text-decoration: underline;
-  }
-
-  .result-meta {
-    margin: 0 0 0.5rem 0;
-    color: #666;
-    font-size: 0.9rem;
-  }
-
-  .result-excerpt {
-    margin: 0 0 0.5rem 0;
-    line-height: 1.5;
-  }
-
-  .result-tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    display: inline-block;
-    background: #f0f0f0;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.85rem;
-    color: #666;
-  }
-</style>
