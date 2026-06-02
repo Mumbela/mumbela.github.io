@@ -1,32 +1,124 @@
----
-layout: default
----
+{% assign layout_data = "" %}<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  {% include head.html %}
+  <body class="d-flex flex-column min-vh-100">
+    {% include navigation.html %}
+    
+    <main class="flex-grow-1">
+      <!-- Hero Section (Full Width) -->
+      <section class="hero-section py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div class="container text-center">
+          <h1 class="display-3 fw-bold mb-3">{{ site.title }}</h1>
+          <p class="lead mb-4">{{ page.tagline | default: "Explore insightful articles on health, wellness, and more" }}</p>
+          {{ content }}
+    <div class="mt-4">
+      <a href="{{ '/blog/' | relative_url }}" class="btn btn-light btn-lg me-2">
+        <i class="bi bi-book me-2"></i>Read Blog
+      </a>
+      <a href="{{ '/search/' | relative_url }}" class="btn btn-outline-light btn-lg">
+        <i class="bi bi-search me-2"></i>Search
+      </a>
+    </div>
+  </div>
+</section>
 
+<!-- Navigation Cards Section -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 fw-bold">Explore</h2>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm hover-shadow" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div class="card-body text-center">
+            <i class="bi bi-newspaper" style="font-size: 2.5rem; color: #667eea;"></i>
+            <h5 class="card-title mt-3">Latest Posts</h5>
+            <p class="card-text text-muted small">{{ site.posts.size }} articles available</p>
+            <a href="{{ '/blog/' | relative_url }}" class="btn btn-sm btn-outline-primary">Browse</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm hover-shadow" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div class="card-body text-center">
+            <i class="bi bi-people" style="font-size: 2.5rem; color: #764ba2;"></i>
+            <h5 class="card-title mt-3">Authors</h5>
+            <p class="card-text text-muted small">Meet our contributors</p>
+            <a href="{{ '/authors/' | relative_url }}" class="btn btn-sm btn-outline-primary">View All</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm hover-shadow" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div class="card-body text-center">
+            <i class="bi bi-archive" style="font-size: 2.5rem; color: #f59e0b;"></i>
+            <h5 class="card-title mt-3">Archives</h5>
+            <p class="card-text text-muted small">Browse by date & category</p>
+            <a href="{{ '/archives/' | relative_url }}" class="btn btn-sm btn-outline-primary">Explore</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm hover-shadow" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div class="card-body text-center">
+            <i class="bi bi-tags" style="font-size: 2.5rem; color: #10b981;"></i>
+            <h5 class="card-title mt-3">Tags</h5>
+            <p class="card-text text-muted small">Discover topics</p>
+            <a href="{{ '/tags/' | relative_url }}" class="btn btn-sm btn-outline-primary">Browse</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  {%- if page.title -%}
-    <h1>{{ page.title }}</h1>
-  {%- endif -%}
-
-  {{ content }}
-
-  {%- if site.posts.size > 0 -%}
-    <h2>{{ page.list_title | default: "Posts" }}</h2>
-    <ul>
-      {%- for post in site.posts -%}
-      <li>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span>{{ post.date | date: date_format }}</span>
-        <h3>
-          <a href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
+<!-- Featured Posts Section -->
+{%- if site.posts.size > 0 -%}
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5 fw-bold">Featured Posts</h2>
+    <div class="row g-4">
+      {%- assign featured_posts = site.posts | slice: 0, 3 -%}
+      {%- for post in featured_posts -%}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <small class="text-muted">
+              <i class="bi bi-calendar-event"></i>
+              {%- assign date_format = site.minima.date_format | default: "%b %d, %Y" -%}
+              {{ post.date | date: date_format }}
+            </small>
+            <h5 class="card-title mt-2">
+              <a href="{{ post.url | relative_url }}" class="text-decoration-none">
+                {{ post.title | escape }}
+              </a>
+            </h5>
+            <p class="card-text text-muted small">{{ post.excerpt | strip_html | truncate: 100 }}</p>
+            {%- if post.author -%}
+            <small class="text-muted">
+              <i class="bi bi-person"></i>
+              {%- assign author = site.authors | where: "short_name", post.author | first -%}
+              {{ author.name | default: post.author }}
+            </small>
+            {%- endif -%}
+          </div>
+          <div class="card-footer bg-transparent">
+            <a href="{{ post.url | relative_url }}" class="btn btn-sm btn-outline-primary">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
       {%- endfor -%}
-    </ul>
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ '/blog/' | relative_url }}" class="btn btn-primary btn-lg">View All Posts <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+      {%- endif -%}
+    </main>
 
-  {%- endif -%}
-
+    {% include footer.html %}
+    <script type="text/javascript" src="{{ "/assets/js/main.js" | relative_url }}"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

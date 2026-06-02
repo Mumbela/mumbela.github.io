@@ -1,9 +1,18 @@
-<footer>
-    <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
-    <nav class="footer-nav">
-      <a href="{{ "/archives/" | relative_url }}">Archives</a> •
-      <a href="{{ "/authors/" | relative_url }}">Authors</a> •
-      <a href="{{ "/feed.xml" | relative_url }}">RSS</a> •
-      <a href="{{ "/sitemap.xml" | relative_url }}">Sitemap</a>
-    </nav>
+<footer class="mt-auto bg-light border-top py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <p class="text-muted mb-0"><strong>{{ site.title }}</strong></p>
+          <small class="text-muted">&copy; {{ site.time | date: "%Y" }} All rights reserved.</small>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <nav class="footer-nav">
+            <a href="{{ "/archives/" | relative_url }}" class="me-3 text-decoration-none text-muted"><i class="bi bi-archive"></i> Archives</a>
+            <a href="{{ "/authors/" | relative_url }}" class="me-3 text-decoration-none text-muted"><i class="bi bi-people"></i> Authors</a>
+            <a href="{{ "/feed.xml" | relative_url }}" class="me-3 text-decoration-none text-muted"><i class="bi bi-rss"></i> RSS</a>
+            <a href="{{ "/sitemap.xml" | relative_url }}" class="text-decoration-none text-muted"><i class="bi bi-map"></i> Sitemap</a>
+          </nav>
+        </div>
+      </div>
+    </div>
 </footer>

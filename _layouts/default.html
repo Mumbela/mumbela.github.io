@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}">
   {% include head.html %}
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     {% include navigation.html %}
     
-    {{ content }}
+    <main class="flex-grow-1">
+      <div class="container py-5">
+        {{ content }}
+      </div>
+    </main>
 
     {% include footer.html %}
     <script type="text/javascript" src="{{ "/assets/js/main.js" | relative_url }}"></script>
