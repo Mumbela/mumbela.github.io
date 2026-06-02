@@ -1,13 +1,13 @@
 url: "https://mumbela.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 baseurl: "" # the subpath of your site, e.g. /blog
-title: "Mumbela Insights" # the name of your site, e.g. ACME Corp.
+title: "Mumbela's Blog" # the name of your site, e.g. ACME Corp.
 description: >-
   Practical insights on health, nutrition, surgery, and everyday wellness.
 lang: en-US
 author:
   name: "Mumbela"
-  email: "hello@mumbela.github.io"
-  twitter: "Mumbela"
+  email: ""
+  twitter: ""
   url: "https://mumbela.github.io"
 
 # theme: minima
