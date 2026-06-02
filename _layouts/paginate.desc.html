@@ -3,47 +3,63 @@ layout: default
 pagination:
   enabled: true
 ---
-<h1>Latest Posts</h1>
 
-<ul>
-{% for post in paginator.posts %}
- <li>
-    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-    {{ post.excerpt }}
-  </li>
-{% endfor %}
-</ul>
+<div class="d-flex justify-content-between align-items-end mb-4">
+  <div>
+    <h1 class="mb-0">Latest Posts</h1>
+    <p class="text-muted">Browse the most recent articles.</p>
+  </div>
+  <a href="{{ '/search/' | relative_url }}" class="btn btn-outline-primary">Search posts</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+  {% for post in paginator.posts %}
+  <div class="col">
+    <article class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h2 class="h5 card-title">
+          <a href="{{ post.url | relative_url }}" class="stretched-link text-decoration-none text-dark">{{ post.title }}</a>
+        </h2>
+        <p class="card-text text-muted mb-3">{{ post.excerpt | strip_html | truncate: 140 }}</p>
+        <div class="mt-auto">
+          <small class="text-muted">
+            {% assign date_format = site.minima.date_format | default: "%b %d, %Y" %}
+            {{ post.date | date: date_format }}
+            {% if post.author %}
+              &bull; by {% assign author = site.authors | where: 'short_name', post.author | first %}{{ author.name | default: post.author }}
+            {% endif %}
+          </small>
+        </div>
+      </div>
+    </article>
+  </div>
+  {% endfor %}
+</div>
 
 {% if paginator.total_pages > 1 %}
-  <nav class="pagination" aria-label="Pagination">
+  <nav class="d-flex justify-content-center align-items-center mt-5" aria-label="Pagination">
     {% if paginator.previous_page %}
       {% assign prev_num = paginator.page | minus: 1 %}
-              {% if prev_num == 1 %}
-                <a class="prev" href="{{ '/blog/' | relative_url }}">Prev</a>
-              {% else %}
-                <a class="prev" href="{{ '/blog/page' | append: prev_num | append: '/' | relative_url }}">Prev</a>
-              {% endif %}
-    {% else %}
-      <span class="prev disabled">Prev</span>
+      {% if prev_num == 1 %}
+        <a class="btn btn-outline-secondary me-2" href="{{ '/blog/' | relative_url }}">← Prev</a>
+      {% else %}
+        <a class="btn btn-outline-secondary me-2" href="{{ '/blog/page' | append: prev_num | append: '/' | relative_url }}">← Prev</a>
+      {% endif %}
     {% endif %}
 
-    {% for i in (1..paginator.total_pages) %}
-      {% if i == paginator.page %}
-        <span class="page current">{{ i }}</span>
-      {% else %}
-                {% if i == 1 %}
-                  <a class="page" href="{{ '/blog/' | relative_url }}">{{ i }}</a>
-                {% else %}
-                  <a class="page" href="{{ '/blog/page' | append: i | append: '/' | relative_url }}">{{ i }}</a>
-                {% endif %}
-      {% endif %}
-    {% endfor %}
+    <ul class="pagination mb-0">
+      {% for i in (1..paginator.total_pages) %}
+        {% if i == paginator.page %}
+          <li class="page-item active" aria-current="page"><span class="page-link">{{ i }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="{% if i == 1 %}{{ '/blog/' | relative_url }}{% else %}{{ '/blog/page' | append: i | append: '/' | relative_url }}{% endif %}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
 
     {% if paginator.next_page %}
       {% assign next_num = paginator.page | plus: 1 %}
-              <a class="next" href="{{ '/blog/page' | append: next_num | append: '/' | relative_url }}">Next</a>
-    {% else %}
-      <span class="next disabled">Next</span>
+      <a class="btn btn-outline-secondary ms-2" href="{{ '/blog/page' | append: next_num | append: '/' | relative_url }}">Next →</a>
     {% endif %}
   </nav>
 {% endif %}
