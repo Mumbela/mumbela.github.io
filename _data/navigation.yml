@@ -1,0 +1,10 @@
+ - name: Home
+   link: /
+ - name: Blog
+   link: /blog/
+ - name: Search
+   link: /search/
+ - name: Authors
+   link: /authors/
+ - name: Archives
+   link: /archives/

@@ -1,0 +1,9 @@
+<nav>
+   {%- for item in site.data.navigation -%}
+        {%- assign nav_link = item.link | relative_url -%}
+        {%- assign page_url = page.url | replace: '.html', '/' -%}
+        <a href="{{ nav_link }}" {% if page_url == nav_link %} class="active" {% endif %}>
+            {{ item.name }}
+        </a>
+   {%- endfor -%}
+</nav>

@@ -1,0 +1,49 @@
+---
+layout: default
+pagination:
+  enabled: true
+---
+<h1>Latest Posts</h1>
+
+<ul>
+{% for post in paginator.posts %}
+ <li>
+    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+    {{ post.excerpt }}
+  </li>
+{% endfor %}
+</ul>
+
+{% if paginator.total_pages > 1 %}
+  <nav class="pagination" aria-label="Pagination">
+    {% if paginator.previous_page %}
+      {% assign prev_num = paginator.page | minus: 1 %}
+              {% if prev_num == 1 %}
+                <a class="prev" href="{{ '/blog/' | relative_url }}">Prev</a>
+              {% else %}
+                <a class="prev" href="{{ '/blog/page' | append: prev_num | append: '/' | relative_url }}">Prev</a>
+              {% endif %}
+    {% else %}
+      <span class="prev disabled">Prev</span>
+    {% endif %}
+
+    {% for i in (1..paginator.total_pages) %}
+      {% if i == paginator.page %}
+        <span class="page current">{{ i }}</span>
+      {% else %}
+                {% if i == 1 %}
+                  <a class="page" href="{{ '/blog/' | relative_url }}">{{ i }}</a>
+                {% else %}
+                  <a class="page" href="{{ '/blog/page' | append: i | append: '/' | relative_url }}">{{ i }}</a>
+                {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if paginator.next_page %}
+      {% assign next_num = paginator.page | plus: 1 %}
+              <a class="next" href="{{ '/blog/page' | append: next_num | append: '/' | relative_url }}">Next</a>
+    {% else %}
+      <span class="next disabled">Next</span>
+    {% endif %}
+  </nav>
+{% endif %}

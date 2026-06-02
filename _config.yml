@@ -1,0 +1,65 @@
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+title: "Test Blog" # the name of your site, e.g. ACME Corp.
+description: >- # ignore newlines til next variable
+
+# theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-archives
+  - jekyll-paginate-v2
+
+pagination:
+  enabled: true
+  per_page: 5
+  permalink: "page:num/"
+  title: " - page :num"
+  limit: 0
+  # sort_field: "date"
+  # sort_reverse: true
+  # category: "posts"
+  # tag: "cool"
+  # locale: "en_US"
+  # paginate_path: "/blog/page:num"
+
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: archive
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
+  title: Archive
+  archive_dir: archives
+  per_page: 5
+
+collections:
+  authors:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "authors"
+    values:
+      layout: "author"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+exclude:
+  - yarn.lock
+  - public/
+  - node_modules/
+  - AGENTS.md
+  - CONTRIBUTING.md

@@ -1,0 +1,43 @@
+﻿---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+<ul>
+  {% for post in page.posts %}
+    <li>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <span>{{ post.date | date: "%B %d, %Y" }}</span>
+    </li>
+  {% endfor %}
+</ul>
+
+{% if page.total_pages > 1 %}
+  <nav class="pagination" aria-label="Archive Pagination">
+    {% if page.previous_page_path %}
+      <a class="prev" href="{{ page.previous_page_path | relative_url }}">Prev</a>
+    {% else %}
+      <span class="prev disabled">Prev</span>
+    {% endif %}
+
+    {% for i in (1..page.total_pages) %}
+      {% if i == page.page %}
+        <span class="page current">{{ i }}</span>
+      {% else %}
+        {% if i == 1 %}
+          <a class="page" href="{{ page.url | relative_url }}">{{ i }}</a>
+        {% else %}
+          {% capture pagelink %}{{ page.url | split: '/' | slice: 0, -2 | join: '/' }}/page{{ i }}/{% endcapture %}
+          <a class="page" href="{{ pagelink | relative_url }}">{{ i }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {% if page.next_page_path %}
+      <a class="next" href="{{ page.next_page_path | relative_url }}">Next</a>
+    {% else %}
+      <span class="next disabled">Next</span>
+    {% endif %}
+  </nav>
+{% endif %}
