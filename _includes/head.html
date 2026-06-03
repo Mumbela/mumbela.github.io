@@ -1,7 +1,11 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>{{ page.title }} - {{ site.title }}</title>
+    {% if page.base_title and paginator %}
+      <title>{{ page.base_title }} - Page {{ paginator.page }} - {{ site.title }}</title>
+    {% else %}
+      <title>{{ page.title }} - {{ site.title }}</title>
+    {% endif %}
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
