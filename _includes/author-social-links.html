@@ -1,0 +1,88 @@
+{% assign author_profile = include.author | default: page %}
+{% assign author_social_fields = "email,website,twitter,x,facebook,instagram,linkedin,github,gitlab,youtube,tiktok,threads,mastodon,medium,stack-overflow,whatsapp,telegram,discord,reddit,pinterest,snapchat,twitch,vimeo,dribbble,behance" | split: "," %}
+{% assign has_author_links = false %}
+
+{% for field_name in author_social_fields %}
+  {% if author_profile[field_name] %}
+    {% assign has_author_links = true %}
+  {% endif %}
+{% endfor %}
+
+{% if has_author_links %}
+  {% if include.heading %}
+    <h3 class="{{ include.heading_class | default: 'h6 mb-2' }}">{{ include.heading }}</h3>
+  {% endif %}
+  <div class="{{ include.wrapper_class | default: 'd-flex flex-wrap gap-2' }}">
+    {% for field_name in author_social_fields %}
+      {% assign field_value = author_profile[field_name] %}
+      {% if field_value %}
+        {% assign icon_name = field_name %}
+        {% assign link_href = field_value %}
+        {% assign link_target = "_blank" %}
+        {% assign link_label = field_name | replace: "-", " " | replace: "_", " " | capitalize %}
+
+        {% case field_name %}
+          {% when "email" %}
+            {% assign icon_name = "envelope" %}
+            {% assign link_href = "mailto:" | append: field_value %}
+            {% assign link_target = "_self" %}
+          {% when "website" %}
+            {% assign icon_name = "globe2" %}
+          {% when "twitter" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://twitter.com/" | append: field_value %}
+            {% endunless %}
+          {% when "x" %}
+            {% assign icon_name = "twitter-x" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://x.com/" | append: field_value %}
+            {% endunless %}
+          {% when "facebook" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://facebook.com/" | append: field_value %}
+            {% endunless %}
+          {% when "instagram" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://instagram.com/" | append: field_value %}
+            {% endunless %}
+          {% when "linkedin" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://linkedin.com/in/" | append: field_value %}
+            {% endunless %}
+          {% when "github" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://github.com/" | append: field_value %}
+            {% endunless %}
+          {% when "gitlab" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://gitlab.com/" | append: field_value %}
+            {% endunless %}
+          {% when "youtube" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://youtube.com/@" | append: field_value %}
+            {% endunless %}
+          {% when "mastodon" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://mastodon.social/@" | append: field_value %}
+            {% endunless %}
+          {% when "medium" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://medium.com/@" | append: field_value %}
+            {% endunless %}
+          {% when "stack-overflow" %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://stackoverflow.com/users/" | append: field_value %}
+            {% endunless %}
+          {% else %}
+            {% unless field_value contains "http" %}
+              {% assign link_href = "https://" | append: field_name | append: ".com/" | append: field_value %}
+            {% endunless %}
+        {% endcase %}
+
+        <a href="{{ link_href }}" class="{{ include.link_class | default: 'btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center' }}" target="{{ link_target }}" rel="noopener" aria-label="{{ link_label }}" title="{{ link_label }}" style="width: 2.25rem; height: 2.25rem;">
+          <i class="bi bi-{{ icon_name }}" aria-hidden="true"></i>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
