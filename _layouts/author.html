@@ -11,7 +11,7 @@ layout: default
           <p class="text-primary mb-3">{{ page.position }}</p>
         {% endif %}
         <p class="text-muted mb-0">{{ page.content | markdownify | strip_html | truncate: 250 }}</p>
-        {% include author-social-links.html author=page wrapper_class="d-flex flex-wrap gap-2 mt-4" %}
+        {% include author-social-links.html author=page wrapper_class="d-flex flex-wrap gap-3 mt-4" %}
       </div>
       <div class="col-md-4 text-md-end">
         {% if page.photo %}
@@ -41,7 +41,7 @@ layout: default
             <p class="mb-2"><strong>Role:</strong> {{ page.position }}</p>
           {% endif %}
 
-          {% include author-social-links.html author=page heading="Connect" heading_class="h6 mt-4 mb-2" wrapper_class="d-flex flex-wrap gap-2" %}
+          {% include author-social-links.html author=page heading="Connect" heading_class="h6 mt-4 mb-2" wrapper_class="d-flex flex-wrap gap-3" %}
         </div>
       </div>
     </div>

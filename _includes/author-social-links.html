@@ -79,8 +79,8 @@
             {% endunless %}
         {% endcase %}
 
-        <a href="{{ link_href }}" class="{{ include.link_class | default: 'btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center' }}" target="{{ link_target }}" rel="noopener" aria-label="{{ link_label }}" title="{{ link_label }}" style="width: 2.25rem; height: 2.25rem;">
-          <i class="bi bi-{{ icon_name }}" aria-hidden="true"></i>
+        <a href="{{ link_href }}" class="{{ include.link_class | default: 'author-social-link link-secondary text-decoration-none d-inline-flex align-items-center' }} author-social-link--{{ field_name }}" target="{{ link_target }}" rel="noopener" aria-label="{{ link_label }}" title="{{ link_label }}">
+          <i class="bi bi-{{ icon_name }} {{ include.icon_class | default: 'fs-3' }}" aria-hidden="true"></i>
         </a>
       {% endif %}
     {% endfor %}

@@ -53,3 +53,110 @@ footer {
 .active {
   font-weight: bold;
 }
+
+.author-social-link {
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.author-social-link:hover,
+.author-social-link:focus {
+  color: var(--author-social-color, #1d4ed8) !important;
+  transform: translateY(-2px);
+}
+
+.author-social-link--email {
+  --author-social-color: #dc2626;
+}
+
+.author-social-link--website {
+  --author-social-color: #0f766e;
+}
+
+.author-social-link--twitter {
+  --author-social-color: #1da1f2;
+}
+
+.author-social-link--x,
+.author-social-link--github {
+  --author-social-color: #111827;
+}
+
+.author-social-link--facebook {
+  --author-social-color: #1877f2;
+}
+
+.author-social-link--instagram {
+  --author-social-color: #e4405f;
+}
+
+.author-social-link--linkedin {
+  --author-social-color: #0a66c2;
+}
+
+.author-social-link--gitlab {
+  --author-social-color: #fc6d26;
+}
+
+.author-social-link--youtube {
+  --author-social-color: #ff0000;
+}
+
+.author-social-link--tiktok {
+  --author-social-color: #111827;
+}
+
+.author-social-link--threads {
+  --author-social-color: #111827;
+}
+
+.author-social-link--mastodon {
+  --author-social-color: #6364ff;
+}
+
+.author-social-link--medium {
+  --author-social-color: #111827;
+}
+
+.author-social-link--stack-overflow {
+  --author-social-color: #f48024;
+}
+
+.author-social-link--whatsapp {
+  --author-social-color: #25d366;
+}
+
+.author-social-link--telegram {
+  --author-social-color: #26a5e4;
+}
+
+.author-social-link--discord {
+  --author-social-color: #5865f2;
+}
+
+.author-social-link--reddit {
+  --author-social-color: #ff4500;
+}
+
+.author-social-link--pinterest {
+  --author-social-color: #bd081c;
+}
+
+.author-social-link--snapchat {
+  --author-social-color: #b39b00;
+}
+
+.author-social-link--twitch {
+  --author-social-color: #9146ff;
+}
+
+.author-social-link--vimeo {
+  --author-social-color: #1ab7ea;
+}
+
+.author-social-link--dribbble {
+  --author-social-color: #ea4c89;
+}
+
+.author-social-link--behance {
+  --author-social-color: #1769ff;
+}
