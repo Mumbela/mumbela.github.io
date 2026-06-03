@@ -2,9 +2,8 @@
 short_name: mumbela
 name: Mumbela Simonda
 position: Writer, Editor
-# twitter: ""
-# photo: ""
-# x:
+# photo: "https://via.placeholder.com/180?text=TS"
+# x: Mumbela7
 instagram: mumbela2
 facebook: Mumbe1S
 linkedin: Mumbela
