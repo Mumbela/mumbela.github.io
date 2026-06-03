@@ -2,15 +2,106 @@
 layout: null
 ---
 [
-  {% for post in site.posts %}
+  {%- assign first_item = true -%}
+  {%- for post in site.posts -%}
+  {%- assign post_author = site.authors | where: "short_name", post.author | first -%}
+  {%- unless first_item -%},{%- endunless -%}
   {
+    "type": "post",
     "title": {{ post.title | jsonify }},
     "url": "{{ post.url | relative_url }}",
     "date": "{{ post.date | date: '%Y-%m-%d' }}",
     "excerpt": {{ post.excerpt | strip_html | jsonify }},
     "content": {{ post.content | strip_html | jsonify }},
     "categories": {{ post.categories | jsonify }},
-    "tags": {{ post.tags | jsonify }}
-  }{% unless forloop.last %},{% endunless %}
-  {% endfor %}
+    "tags": {{ post.tags | jsonify }},
+    "author": {{ post.author | jsonify }},
+    "author_name": {{ post_author.name | default: post.author | jsonify }},
+    "author_position": {{ post_author.position | jsonify }}
+  }
+  {%- assign first_item = false -%}
+  {%- endfor -%}
+
+  {%- for author in site.authors -%}
+  {%- assign author_posts = site.posts | where: "author", author.short_name -%}
+  {%- unless first_item -%},{%- endunless -%}
+  {
+    "type": "author",
+    "title": {{ author.name | jsonify }},
+    "url": "{{ author.url | relative_url }}",
+    "date": "",
+    "excerpt": {{ author.content | strip_html | jsonify }},
+    "content": {{ author.content | strip_html | jsonify }},
+    "categories": [],
+    "tags": [],
+    "author": {{ author.short_name | jsonify }},
+    "author_name": {{ author.name | jsonify }},
+    "author_position": {{ author.position | jsonify }},
+    "related_posts": {{ author_posts | map: "title" | jsonify }}
+  }
+  {%- assign first_item = false -%}
+  {%- endfor -%}
+
+  {%- for page in site.pages -%}
+  {%- assign searchable_page = true -%}
+  {%- if page.path == "assets/search.json" or page.path == "404.md" or page.url == "/search/" -%}
+    {%- assign searchable_page = false -%}
+  {%- endif -%}
+  {%- if page.url contains "/tags/" or page.url contains "/categories/" or page.url contains "/blog/page" -%}
+    {%- assign searchable_page = false -%}
+  {%- endif -%}
+  {%- if page.title and searchable_page -%}
+  {%- unless first_item -%},{%- endunless -%}
+  {
+    "type": "page",
+    "title": {{ page.title | jsonify }},
+    "url": "{{ page.url | relative_url }}",
+    "date": "",
+    "excerpt": {{ page.description | default: page.tagline | default: page.content | strip_html | jsonify }},
+    "content": {{ page.content | strip_html | jsonify }},
+    "categories": [],
+    "tags": [],
+    "author": "",
+    "author_name": "",
+    "author_position": ""
+  }
+  {%- assign first_item = false -%}
+  {%- endif -%}
+  {%- endfor -%}
+
+  {%- for category in site.categories -%}
+  {%- unless first_item -%},{%- endunless -%}
+  {
+    "type": "category",
+    "title": {{ category[0] | capitalize | prepend: "Category: " | jsonify }},
+    "url": "{{ '/categories/' | append: category[0] | append: '/' | relative_url }}",
+    "date": "",
+    "excerpt": {{ category[1] | map: "title" | join: ", " | jsonify }},
+    "content": {{ category[1] | map: "title" | join: " " | jsonify }},
+    "categories": [{{ category[0] | jsonify }}],
+    "tags": [],
+    "author": "",
+    "author_name": "",
+    "author_position": ""
+  }
+  {%- assign first_item = false -%}
+  {%- endfor -%}
+
+  {%- for tag in site.tags -%}
+  {%- unless first_item -%},{%- endunless -%}
+  {
+    "type": "tag",
+    "title": {{ tag[0] | prepend: "Tag: " | jsonify }},
+    "url": "{{ '/tags/' | append: tag[0] | append: '/' | relative_url }}",
+    "date": "",
+    "excerpt": {{ tag[1] | map: "title" | join: ", " | jsonify }},
+    "content": {{ tag[1] | map: "title" | join: " " | jsonify }},
+    "categories": [],
+    "tags": [{{ tag[0] | jsonify }}],
+    "author": "",
+    "author_name": "",
+    "author_position": ""
+  }
+  {%- assign first_item = false -%}
+  {%- endfor -%}
 ]

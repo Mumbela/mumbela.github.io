@@ -36,12 +36,12 @@ permalink: /search/
 </section>
 
 <script>
-  let postsData = [];
+  let searchData = [];
 
   fetch('{{ "/assets/search.json" | relative_url }}')
     .then(response => response.json())
     .then(data => {
-      postsData = data;
+      searchData = data;
     })
     .catch(error => console.error('Error loading search index:', error));
 
@@ -55,20 +55,25 @@ permalink: /search/
 
   function renderResults(results) {
     if (!results || results.length === 0) {
-      renderMessage('No posts found. Try a different search term.', 'warning');
+      renderMessage('No results found. Try a different search term.', 'warning');
       return;
     }
 
-    const html = results.map(post => {
-      const tags = (post.tags || []).map(tag => `<span class="badge bg-secondary me-1 mb-1">${escapeHtml(tag)}</span>`).join('');
+    const html = results.map(item => {
+      const tags = (item.tags || []).map(tag => `<span class="badge bg-secondary me-1 mb-1">${escapeHtml(tag)}</span>`).join('');
+      const categories = (item.categories || []).map(category => `<span class="badge bg-light text-dark border me-1 mb-1">${escapeHtml(category)}</span>`).join('');
+      const meta = [item.date, item.author_name, item.author_position].filter(Boolean).map(escapeHtml).join(' &bull; ');
+      const label = escapeHtml(item.type || 'result');
+      const excerpt = escapeHtml((item.excerpt || item.content || '').substring(0, 160));
       return `
         <div class="col-12">
           <div class="card shadow-sm border-0 mb-3">
             <div class="card-body">
-              <h3 class="h5 card-title mb-2"><a href="${post.url}" class="text-decoration-none text-dark">${escapeHtml(post.title)}</a></h3>
-              <p class="text-muted mb-2">${escapeHtml(post.date)}</p>
-              <p class="card-text text-muted mb-3">${escapeHtml((post.excerpt || '').substring(0, 140))}...</p>
-              <div>${tags}</div>
+              <span class="badge bg-primary-subtle text-primary-emphasis text-capitalize mb-2">${label}</span>
+              <h3 class="h5 card-title mb-2"><a href="${item.url}" class="text-decoration-none text-dark">${escapeHtml(item.title)}</a></h3>
+              ${meta ? `<p class="text-muted mb-2">${meta}</p>` : ''}
+              <p class="card-text text-muted mb-3">${excerpt}${excerpt.length >= 160 ? '...' : ''}</p>
+              <div>${tags}${categories}</div>
             </div>
           </div>
         </div>
@@ -83,10 +88,10 @@ permalink: /search/
     `;
   }
 
-  function searchPosts(query) {
+  function searchSite(query) {
     const normalized = query.trim().toLowerCase();
     if (!normalized) {
-      renderMessage('Enter a search term to find posts.');
+      renderMessage('Enter a search term to find site content.');
       return;
     }
 
@@ -95,15 +100,19 @@ permalink: /search/
       return;
     }
 
-    const results = postsData.filter(post => {
-      const title = (post.title || '').toLowerCase();
-      const content = (post.content || '').toLowerCase();
-      const excerpt = (post.excerpt || '').toLowerCase();
-      const tags = (post.tags || []).join(' ').toLowerCase();
-      const categories = (post.categories || []).join(' ').toLowerCase();
-      const author = (post.author || '').toLowerCase();
+    const results = searchData.filter(item => {
+      const title = (item.title || '').toLowerCase();
+      const content = (item.content || '').toLowerCase();
+      const excerpt = (item.excerpt || '').toLowerCase();
+      const tags = (item.tags || []).join(' ').toLowerCase();
+      const categories = (item.categories || []).join(' ').toLowerCase();
+      const author = (item.author || '').toLowerCase();
+      const authorName = (item.author_name || '').toLowerCase();
+      const authorPosition = (item.author_position || '').toLowerCase();
+      const relatedPosts = (item.related_posts || []).join(' ').toLowerCase();
+      const type = (item.type || '').toLowerCase();
 
-      return [title, content, excerpt, tags, categories, author].some(field => field.includes(normalized));
+      return [title, content, excerpt, tags, categories, author, authorName, authorPosition, relatedPosts, type].some(field => field.includes(normalized));
     });
 
     renderResults(results);
@@ -112,17 +121,17 @@ permalink: /search/
   searchInput.addEventListener('input', function() {
     const query = this.value;
     clearButton.style.display = query ? 'block' : 'none';
-    searchPosts(query);
+    searchSite(query);
   });
 
   clearButton.addEventListener('click', function() {
     searchInput.value = '';
     clearButton.style.display = 'none';
-    renderMessage('Enter a search term to find posts.');
+    renderMessage('Enter a search term to find site content.');
     searchInput.focus();
   });
 
-  renderMessage('Enter a search term to find posts.');
+  renderMessage('Enter a search term to find site content.');
 
   function escapeHtml(text) {
     return String(text)
