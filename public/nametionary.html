@@ -15,13 +15,115 @@
             </nav>
         </header>
 
-        <main>
+        <main class="">
             <h1>Nametionary</h1>
+
+            <section>
+                <form id="names-form">
+                    <!-- repeatable forms -->
+                    <div id="forms-list"></div>
+                    <button type="button" id="add-form">Add form</button>
+                    <br><br>
+                    <button type="submit">Submit</button>
+                </form>
+
+                <div id="message"></div>
+            </section>
+            <section>
+                <h2>Submitted Names</h2>
+                <ul id="submitted-names"></ul>
+            </section>
         </main>
 
         <footer>
             <p>&copy; 2026 Mumbela Simonda. All rights reserved.</p>
         </footer>
+
+        <script>
+            const API_URL = 'http://localhost:3001/names';
+
+            // forms
+            const formsList = document.getElementById('forms-list');
+            const addFormBtn = document.getElementById('add-form');
+            function createFormInput(){
+                const div = document.createElement('fieldset');
+                div.innerHTML = `
+                    <legend>Names</legend>
+                    <input type="text" name="name_name" placeholder="Name" required><br />
+                    <input type="text" name="name_meaning" placeholder="Meaning" required><br />
+                    <input type="text" name="name_language" placeholder="Language" required><br />
+                    <input type="text" name="name_country" placeholder="Country" required><br />
+                    <button type="button" class="remove-form">Remove</button>
+                `;
+                div.querySelector('.remove-form').onclick = () => div.remove();
+                return div;
+            }
+            formsList.appendChild(createFormInput());
+            addFormBtn.onclick = () => formsList.appendChild(createFormInput());
+
+            // submitted names
+            const submittedNames = document.getElementById('submitted-names');
+
+            async function loadAllNames() {
+                try {
+                    const res = await fetch(API_URL);
+                    const names = await res.json();
+
+                    submittedNames.innerHTML = '';
+                    names.forEach((entry) => {
+                        const item = document.createElement('li');
+                        item.textContent = `${entry.name} - ${entry.meaning} (${entry.language}, ${entry.country})`;
+                        submittedNames.appendChild(item);
+                    });
+                } catch (err) {
+                    document.getElementById('message').textContent = 'Could not load submitted names.';
+                }
+            }
+
+            // form submission
+            document.getElementById('names-form').onsubmit = async function(e) {
+                e.preventDefault();
+
+                const entries = Array.from(formsList.querySelectorAll('fieldset')).map((fieldset) => ({
+                    name: fieldset.querySelector('[name="name_name"]').value.trim(),
+                    meaning: fieldset.querySelector('[name="name_meaning"]').value.trim(),
+                    language: fieldset.querySelector('[name="name_language"]').value.trim(),
+                    country: fieldset.querySelector('[name="name_country"]').value.trim()
+                })).filter((entry) => entry.name && entry.meaning && entry.language && entry.country);
+
+                if (!entries.length) {
+                    document.getElementById('message').textContent = 'Please fill in at least one name.';
+                    return;
+                }
+
+                try {
+                    const responses = await Promise.all(entries.map((entry) => {
+                        return fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(entry)
+                        });
+                    }));
+
+                    if (responses.every((res) => res.ok)) {
+                        document.getElementById('message').textContent = 'Name added successfully!';
+                        document.getElementById('names-form').reset();
+
+                        while (formsList.firstChild) {
+                            formsList.firstChild.remove();
+                        }
+                        formsList.appendChild(createFormInput());
+                        await loadAllNames();
+                    } else {
+                        document.getElementById('message').textContent = 'Failed to add name. Please try again!';
+                    }
+                } catch (err) {
+                    document.getElementById('message').textContent = 'Error connecting to server. Run npm run json-server first.';
+                }
+            };
+
+            loadAllNames();
+        </script>
         <script src="assets/js/main.js"></script>
     </body>
 </html>

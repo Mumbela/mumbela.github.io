@@ -63,6 +63,8 @@ defaults:
 
 exclude:
   - yarn.lock
+  - package.json
+  - package-lock.json
   - public/
   - node_modules/
   - AGENTS.md
