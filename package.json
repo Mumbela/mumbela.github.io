@@ -1,0 +1,30 @@
+{
+  "name": "mumbela.github.io",
+  "version": "1.0.0",
+  "description": "A simple blog",
+  "keywords": [
+    "blog"
+  ],
+  "homepage": "https://github.com/Mumbela/mumbela.github.io#readme",
+  "bugs": {
+    "url": "https://github.com/Mumbela/mumbela.github.io/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mumbela/mumbela.github.io.git"
+  },
+  "license": "ISC",
+  "author": "Mumbela Simonda",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run jekyll\" \"npm run json-server\"",
+    "jekyll": "bundle exec jekyll serve --watch --drafts --livereload",
+    "json-server": "json-server --watch _data/db.json --port 3001",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.15",
+    "concurrently": "^10.0.3"
+  }
+}
